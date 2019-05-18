@@ -19,9 +19,9 @@ class migration201711281519
             $users->setPrimaryKey(['id']);
             $users->addColumn('type_user', Type::GUID, ['length' => 64]);
             $users->addIndex(['type_user'], 'type_user');
-            $users->addColumn('type_waste', Type::BLOB);
+            $users->addColumn('type_waste', Type::STRING, ['length' => 1024]);
             $users->addIndex(['type_waste'], 'type_waste');
-            $users->addColumn('coordinate', Type::BLOB);
+            $users->addColumn('coordinate', Type::STRING, ['length' => 1024]);
             $users->addColumn('contact', Type::STRING, ['length' => 255, 'notnull' => false]);
             $users->addColumn('email', Type::STRING, ['length' => 255]);
             $users->addColumn('date_create', Type::DATETIME );

@@ -23,7 +23,7 @@ class Users extends AbstractDbModel
     const FIELD_DATE_CREATE = "date_create";
     const FIELD_DATE_UPDATE = "date_update";
 
-    const TABLE_NAME = "users";
+    const TABLE_NAME = "user";
     /**
      * @var string $id ;
      */
