@@ -1,0 +1,32 @@
+{% extends '/layout/main.twig' %}
+{% set pageTitle="Мусор разделяй" %}
+{% block breadcrumb %}
+    <ol class="breadcrumb">
+        <li class="active">{{ pageTitle }}</li>
+    </ol>
+{% endblock %}
+{% block content %}
+    <div class="row" style="height: 100%;">
+        <div class="col-sm-12" style="height: 100%;">
+            <div id="map" style="height: 100%;"></div>
+        <div>
+    </div>
+{% endblock %}
+{% block script %}
+            <script>
+            var myMap;
+            ymaps.ready(init);
+            function init () {
+            // Создание экземпляра карты и его привязка к контейнеру с
+        // заданным id ("map").
+        myMap = new ymaps.Map('map', {
+            // При инициализации карты обязательно нужно указать
+            // её центр и коэффициент масштабирования.
+            center: [55.76, 37.64], // Москва
+            zoom: 10
+        }, {
+            searchControlProvider: 'yandex#search'
+        });
+        }
+                </script>
+{% endblock %}

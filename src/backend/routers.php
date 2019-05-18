@@ -13,7 +13,7 @@ $app->get('/hello/{name}', function(Request $request, $name) use ($app) {
 
 
 $app->mount("/", new schedule\Controller\Provider\DefaultProvider());
-$app->mount("/", new schedule\Controller\Provider\ScheduleControllerProvider());
+$app->mount("/map", new schedule\Controller\Provider\MapControllerProvider());
 
 
 

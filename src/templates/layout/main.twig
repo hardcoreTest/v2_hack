@@ -49,19 +49,14 @@
         webvisor:true
     });
 </script>
+<script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=f74c31cf-3ec6-4074-b4c3-b3c6aa2cf62a" type="text/javascript"></script>
+
 <noscript><div><img src="https://mc.yandex.ru/watch/52748311" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <!-- /Yandex.Metrika counter -->
-<div class="container-fluid">
-    <nav class="navbar navbar-default" style="padding-top: 1%">
+<div class="container-fluid" style="height: 100%">
+    <nav class="navbar navbar-default" style="padding-top: 1%;">
         <ul class="nav navbar-nav">
-            <li role="presentation"><a href="{{ path('schedule_about') }}">О театре (задание 1)</a></li>
-            <li role="presentation"><a href="{{ path('schedule_poster') }}">Афиша (задание 2)</a></li>
-            <li role="presentation"><a href="/z5.fbx">Макет театра (задание 5)</a></li>
-            <li role="presentation"><a href="{{ path('schedule_video') }}">О театре Видео (задание 7)</a></li>
-            <li role="presentation"><a href="{{ path('schedule_brochure') }}">Брошюра (задание 8)</a></li>
-            <li role="presentation"><a href="{{ path('schedule_prezi') }}">Презентация (задание 9)</a></li>
-            <li role="presentation"><a href="{{ path('schedule_work') }}">Таблицы (задание 11)</a></li>
-            <li role="presentation"><a href="{{ path('schedule_price') }}">БД(задание 12)</a></li>
+
         </ul>
     </nav>
     {% block content %}

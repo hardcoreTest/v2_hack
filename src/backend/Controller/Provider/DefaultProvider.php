@@ -20,7 +20,7 @@ class DefaultProvider implements ControllerProviderInterface
         $controllers = $app['controllers_factory'];
 
         $controllers->get('', function (Application $app, Request $request) {
-            return  $app->redirect($app['url_generator']->generate('schedule_about'), 302);
+            return  $app->redirect($app['url_generator']->generate('map_index'), 302);
         })->bind("default");
 
         return $controllers;
