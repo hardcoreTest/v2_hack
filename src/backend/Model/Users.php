@@ -37,12 +37,14 @@ class Users extends AbstractDbModel
         'paper' => 'Бумага',
         'glass' => 'Стекло',
         'plastic' => 'Пластик',
+        'metal' => 'Метал',
     ];
 
     const WASTE_COLOR = [
-        'paper' => '#fff',
-        'glass' => '#f0f',
-        'plastic' => '#ff0',
+        'paper' => '#ffcc00',
+        'glass' => '#806b2a',
+        'plastic' => '#7b917b',
+        'metal' => '#e0007b',
     ];
     /**
      * @var string $id ;
@@ -74,6 +76,7 @@ class Users extends AbstractDbModel
         'type_user' => 'type_user',
         'type_waste' => 'type_waste',
         'coordinate' => 'coordinate',
+        'email' => 'email',
         'contact' => 'contact',
         'date_create' => 'date_create',
         'date_update' => 'date_update',
@@ -87,13 +90,13 @@ class Users extends AbstractDbModel
     {
         $result = [];
         foreach ($models as $model) {
-            $types = $model->getTypeWaste();
+            $types = json_decode($model->getTypeWaste());
             foreach ($types as $type) {
                 if (empty($result[$type])) {
                     $result[$type] = [];
                 }
                 $arr = $model->toArray();
-                $arr['type_waste'] = $model->getTypeWaste();
+                $arr['type_waste'] = $types;
                 $result[$type][] = $arr;
             }
         }
@@ -152,19 +155,19 @@ class Users extends AbstractDbModel
     }
 
     /**
-     * @return array
+     * @return string
      */
-    public function getTypeWaste(): array
+    public function getTypeWaste(): string
     {
-        return json_decode($this->type_waste);
+        return $this->type_waste;
     }
 
     /**
-     * @param string $type_waste
+     * @param array $type_waste
      */
-    public function setTypeWaste(string $type_waste)
+    public function setTypeWaste(array $type_waste)
     {
-        $this->type_waste = json_encode($type_waste);
+        $this->type_waste = $type_waste;
         $this->dirtyField('type_waste');
     }
 
@@ -173,7 +176,7 @@ class Users extends AbstractDbModel
      */
     public function getCoordinate(): string
     {
-        return json_decode($this->coordinate);
+        return $this->coordinate;
     }
 
     /**
@@ -181,7 +184,7 @@ class Users extends AbstractDbModel
      */
     public function setCoordinate(string $coordinate)
     {
-        $this->coordinate = json_encode($coordinate);
+        $this->coordinate = $coordinate;
         $this->dirtyField('coordinate');
     }
 
@@ -213,9 +216,9 @@ class Users extends AbstractDbModel
     /**
      * @param string $date_create
      */
-    public function setDateCreate(string $date_create)
+    public function setDateCreate()
     {
-        $this->date_create = $date_create;
+        $this->date_create = date('Y-m-d h:i:s');
         $this->dirtyField('date_create');
     }
 
@@ -230,9 +233,9 @@ class Users extends AbstractDbModel
     /**
      * @param string $date_update
      */
-    public function setDateUpdate(string $date_update)
+    public function setDateUpdate()
     {
-        $this->date_update = $date_update;
+        $this->date_update =  date('Y-m-d h:i:s');
         $this->dirtyField('date_update');
     }
 

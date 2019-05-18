@@ -1,0 +1,31 @@
+{% extends '/layout/modal.twig' %}
+{% set modalId="addUser" %}
+{% set modalLabelId="addUserLabel" %}
+{% block content %}
+    <form id="newUserData" method="post" action="">
+        <div class="form-group">
+        <label for="name" class="control-label col-sm-3">Имя/Наименование организации</label>
+        <input type="text" id="name" name="name" class="form-control col-sm-9">
+        <label for="type_user" class="control-label col-sm-3">Вы...</label>
+        <select id="type_user" name="type_user" class="form-control col-sm-9">
+            <option value="user">Пользователь</option>
+            <option value="collector">Сборщик</option>
+            <option value="utilizer">Утилизатор</option>
+        </select>
+        <label for="type_waste" class="control-label col-sm-3">Мусор</label>
+        <select id="type_waste" name="type_waste[]" class="form-control col-sm-9" multiple>
+            <option value="paper">Бумага</option>
+            <option value="glass">Стекло</option>
+            <option value="metal">Металл</option>
+            <option value="plastic">Пластик</option>
+        </select>
+        <label for="coordinate" class="control-label col-sm-3">Координаты</label>
+        <input type="text" id="coordinate" name="coordinate" class="form-control col-sm-9">
+        <label for="contact" class="control-label col-sm-3">Телефон</label>
+        <input type="text" id="contact" name="contact" class="form-control col-sm-9">
+        <label for="email" class="control-label col-sm-3">Почта</label>
+        <input type="text" id="email" name="email" class="form-control col-sm-9">
+        <input type="button" class="form-control btn btn-default save" value="Сохранить">
+        </div>
+    </form>
+{% endblock %}

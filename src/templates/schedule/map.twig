@@ -6,13 +6,14 @@
     </ol>
 {% endblock %}
 {% block content %}
-
     <div class="row" style="height: 100%;">
         <div class="col-sm-12" style="height: 100%;">
             <div id="map" class="col-sm-8" style="height: 50%;"></div>
             <div id="legend" class="col-sm-4"> </div>
         <div>
     </div>
+    </div>
+    {% include "/Modal/newUser.twig" %}
 {% endblock %}
 {% block script %}
             <script>
@@ -23,7 +24,7 @@
                     items: [
                         {% for user in group %}
                                         {
-                    center: {{ user['coordinate'] }},
+                    center: {{ user['coordinate']|raw  }},
                     name: '{{ user['name'] }}',
                     data: [
                         {% for type in user['type_waste'] %}
@@ -38,6 +39,8 @@
     ];
 
             var myMap;
+            var coords;
+            var coordText;
             ymaps.ready(init);function init() {
 
     // Создание экземпляра карты.
@@ -51,15 +54,18 @@
         menu = $('<ul class="menu"></ul>');
         myMap.events.add('click', function (e) {
         if (!myMap.balloon.isOpen()) {
-            var coords = e.get('coords');
+            coords = e.get('coords');
+            coordText = [
+                    coords[0].toPrecision(6),
+                    coords[1].toPrecision(6)
+                ].join(', ');
+            $('#coordinate').val(coordText);
             myMap.balloon.open(coords, {
                 contentHeader:'Событие!',
                 contentBody:'<p>Кто-то щелкнул по карте.</p>' +
-                    '<p>Координаты щелчка: ' + [
-                    coords[0].toPrecision(6),
-                    coords[1].toPrecision(6)
-                    ].join(', ') + '</p>',
-                contentFooter:'<sup>Щелкните еще раз</sup>'
+                    '<p>Координаты щелчка: ' + coordText + '</p>',
+                contentFooter:'<sup><button class="form-control btn-primary add-mark" style="margin: 5px" data-toggle="modal"\n'+
+'                            data-target="#addUser">Добавить метку</button></sup>'
             });
         }
         else {
@@ -154,6 +160,41 @@
     menu.appendTo($('#legend'));
     // Выставляем масштаб карты чтобы были видны все группы.
     myMap.setBounds(myMap.geoObjects.getBounds());
+    $(document).ready(function() {
+        $('.save').click(function () {
+                $('.update').hide();
+                var _self = this;
+                var $btn = $(this).bootstrapBtn('loading');
+                jQuery.ajax({
+                    url: "{{ path('map_save') }}", //url страницы (action_ajax_form.php)
+                    type: "POST", //метод отправки
+                    data: jQuery("#newUserData").serialize(),
+                    success: function (response) {
+                        $btn.bootstrapBtn('reset');
+                        if (response.success) {
+                            $('#addUser').modal('hide');
+                        } else {
+                            var errorName = '<p class="bg-danger update">';
+                            var errorCoordinate = '<p class="bg-danger update">'
+                            if (typeof response.errors.name !== 'undefined') {
+                                for (var error in response.errors.name) {
+                                    errorName += response.errors.name;
+                                }
+                                errorName += '</p>';
+                                $('#newLogin').before(errorName);
+                            }
+                            if (typeof response.errors.coordinate !== 'undefined') {
+                                for (var error in response.errors.coordinate) {
+                                    errorCoordinate += response.errors.coordinate;
+                                }
+                                errorCoordinate += '</p>';
+                                $('#newPassword').before(errorCoordinate);
+                            }
+                        }
+                    }
+                });
+            });
+    });
 }
-                </script>
+</script>
 {% endblock %}

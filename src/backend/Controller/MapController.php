@@ -12,6 +12,7 @@ namespace schedule\Controller;
 use schedule\Model\Users;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 
@@ -46,5 +47,34 @@ class MapController
         );
     }
 
+    public function save(Application $app, Request $request)
+    {
+        $parsedBody = $request->request->all();
+        $success = true;
+        $error = [];
+        if (empty($parsedBody['name'])) {
+            $success = false;
+            $error['name'] = 'Пустое имя';
+        }
+        if (empty($parsedBody['coordinate'])) {
+            $success = false;
+            $error['coordinate'] = 'Не заданы координаты';
+        }
+        if ($success) {
+            /** @var Users $user */
+            $user = $app['model.user'];
+            $parsedBody['coordinate'] = json_encode(explode(', ',$parsedBody['coordinate'])) ;
+            $parsedBody['type_waste'] = json_encode($parsedBody['type_waste']) ;
+            $user->fillFromArray($parsedBody);
+            $user->setId($app['GUID.generate']);
+            $user->setDateCreate();
+            $user->setDateUpdate();
+            $user->insert();
+        }
+        return JsonResponse::create([
+            'success' => $success,
+            'errors' => $error
+        ]);
+    }
 
 }

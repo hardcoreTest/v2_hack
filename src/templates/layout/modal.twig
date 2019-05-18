@@ -1,0 +1,15 @@
+{#modal#}
+<div class="modal" id="{{ modalId|default("") }}" tabindex="-1" role="dialog" aria-labelledby="editCity" aria-hidden="true">
+    <div class="modal-dialog" style="width:60%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="{{ modalLabelId|default("") }}">{{ modalLabelText|default("") }}</h4>
+            </div>
+            <div class="modal-body" style="max-height:700px; min-height:300px; overflow: auto;">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+</div>

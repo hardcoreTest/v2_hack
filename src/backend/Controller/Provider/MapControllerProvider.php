@@ -23,6 +23,7 @@ class MapControllerProvider implements ControllerProviderInterface
         };
 
         $controllers->get('', "controllers.bundle.map:map")->bind("map_index");
+        $controllers->post('/save', "controllers.bundle.map:save")->bind("map_save");
         return $controllers;
     }
 }
