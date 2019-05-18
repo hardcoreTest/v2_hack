@@ -13,8 +13,11 @@ class Users extends AbstractDbModel
 {
     const FIELD_ID = "id";
     const FIELD_NAME = "name";
+
+    const TYPE_USERS = ['user', 'collector', 'utilizer'];
     // user, collector, utilizer
     const FIELD_TYPE_USER = "type_user";
+    const TYPE_WASTE = ['paper', 'glass', 'plastic'];
 //    paper, хуибала, дрыгалы
     const FIELD_TYPE_WASTE = "type_waste";
     const FIELD_COORDINATE = "coordinate";
@@ -24,6 +27,23 @@ class Users extends AbstractDbModel
     const FIELD_DATE_UPDATE = "date_update";
 
     const TABLE_NAME = "user";
+
+    const  USER_TRANSLATE = [
+        'user' => 'Пользователь',
+        'collector' => 'Сборщик',
+        'utilizer' => 'Утилизатор',
+    ];
+    const  WASTE_TRANSLATE = [
+        'paper' => 'Бумага',
+        'glass' => 'Стекло',
+        'plastic' => 'Пластик',
+    ];
+
+    const WASTE_COLOR = [
+        'paper' => '#fff',
+        'glass' => '#f0f',
+        'plastic' => '#ff0',
+    ];
     /**
      * @var string $id ;
      */
@@ -37,8 +57,10 @@ class Users extends AbstractDbModel
     protected $type_waste;
     /** @var string */
     protected $coordinate;
-/** string */
+    /** string */
     protected $contact;
+    /** string */
+    protected $email;
     /** @var string */
     protected $date_create;
     /** @var string */
@@ -46,7 +68,7 @@ class Users extends AbstractDbModel
 
     protected $tableName = self::TABLE_NAME;
     protected $keyField = 'id';
-    protected $fieldMap = array(
+    protected $fieldMap = [
         'id' => 'id',
         'name' => 'name',
         'type_user' => 'type_user',
@@ -55,7 +77,26 @@ class Users extends AbstractDbModel
         'contact' => 'contact',
         'date_create' => 'date_create',
         'date_update' => 'date_update',
-    );
+    ];
+
+    /**
+     * @param self[] $models
+     * @return self[]
+     */
+    public function getGroupByType($models)
+    {
+        $result = [];
+        foreach ($models as $model) {
+            $types = $model->getTypeWaste();
+            foreach ($types as $type) {
+                if (empty($result[$type])) {
+                    $result[$type] = [];
+                }
+                $result[$type][] = $model->toArray();
+            }
+        }
+        return $result;
+    }
 
     /**
      * @return string
@@ -109,11 +150,11 @@ class Users extends AbstractDbModel
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getTypeWaste(): string
+    public function getTypeWaste(): array
     {
-        return $this->type_waste;
+        return json_decode($this->type_waste);
     }
 
     /**
@@ -121,7 +162,7 @@ class Users extends AbstractDbModel
      */
     public function setTypeWaste(string $type_waste)
     {
-        $this->type_waste = $type_waste;
+        $this->type_waste = json_encode($type_waste);
         $this->dirtyField('type_waste');
     }
 
@@ -130,7 +171,7 @@ class Users extends AbstractDbModel
      */
     public function getCoordinate(): string
     {
-        return $this->coordinate;
+        return json_decode($this->coordinate);
     }
 
     /**
@@ -138,7 +179,7 @@ class Users extends AbstractDbModel
      */
     public function setCoordinate(string $coordinate)
     {
-        $this->coordinate = $coordinate;
+        $this->coordinate = json_encode($coordinate);
         $this->dirtyField('coordinate');
     }
 
@@ -192,10 +233,6 @@ class Users extends AbstractDbModel
         $this->date_update = $date_update;
         $this->dirtyField('date_update');
     }
-
-
-
-
 
 
 }

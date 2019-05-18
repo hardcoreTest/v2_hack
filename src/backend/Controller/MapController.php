@@ -29,11 +29,21 @@ class MapController
         $this->app = $app;
     }
 
-    public function map(Application $app, Request $request){
+    public function map(Application $app, Request $request)
+    {
         /** @var Users $model */
         $model = $app['model.user'];
-        $users = $model->search([],[],0);
-        return $app['twig']->render(self::DIRECTORY . '/map.twig');
+        $users = $model->search(
+            [Users::FIELD_TYPE_USER => ['collector', 'utilizer']],
+            [Users::FIELD_TYPE_WASTE=>'asc'],
+            0);
+        $groups = $model->getGroupByType($users);
+        return $app['twig']->render(
+            self::DIRECTORY . '/map.twig',
+            [
+                "groups" => $groups,
+            ]
+        );
     }
 
 

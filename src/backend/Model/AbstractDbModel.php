@@ -350,7 +350,15 @@ namespace schedule\Model {
 
             $result = array();
             $rows = $db->fetchAll($sql);
-            return $rows;
+            foreach ($rows as $row) {
+                $className = get_class($this);
+                /** @var AbstractDbModel $obj */
+                $obj = new $className($this->container);
+                $obj->fillFromArray($row);
+                $obj->resetDirtyStatus();
+                $result[] = $obj;
+            }
+            return $result;
         }
 
         /**
