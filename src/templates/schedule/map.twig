@@ -6,6 +6,7 @@
     </ol>
 {% endblock %}
 {% block content %}
+
     <div class="row" style="height: 100%;">
         <div class="col-sm-12" style="height: 100%;">
             <div id="map" class="col-sm-8" style="height: 50%;"></div>
@@ -15,7 +16,26 @@
 {% endblock %}
 {% block script %}
             <script>
-
+                        var groups = [
+                {% for key, group in groups %}
+                {
+                    name: '{{  constant("schedule\\Model\\Users::WASTE_TRANSLATE")[key] }}',
+                    items: [
+                        {% for user in group %}
+                                        {
+                    center: {{ user['coordinate'] }},
+                    name: '{{ user['name'] }}',
+                    data: [
+                        {% for type in user['type_waste'] %}
+                        {weight: 1, color:'{{  constant("schedule\\Model\\Users::WASTE_COLOR")[type] }}' },
+                        {% endfor %}
+                    ]
+                },
+                        {% endfor %}
+                    ]
+                },
+                {% endfor %}
+    ];
 
             var myMap;
             ymaps.ready(init);function init() {
@@ -94,15 +114,15 @@
                 item.center,
                  {
                      data: item.data,
-                     iconCaption: item.name
+                         iconContent: "",
+                      iconCaption: item.name
                  }, {
-            iconContent: "",
             // Зададим произвольный макет метки.
             iconLayout: 'default#pieChart',
             // Радиус диаграммы в пикселях.
             iconPieChartRadius: 30,
             // Радиус центральной части макета.
-            iconPieChartCoreRadius: 10,
+            iconPieChartCoreRadius: 0,
             // Стиль заливки центральной части.
             iconPieChartCoreFillStyle: '#ffffff',
             // Cтиль линий-разделителей секторов и внешней обводки диаграммы.

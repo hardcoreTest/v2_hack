@@ -92,7 +92,9 @@ class Users extends AbstractDbModel
                 if (empty($result[$type])) {
                     $result[$type] = [];
                 }
-                $result[$type][] = $model->toArray();
+                $arr = $model->toArray();
+                $arr['type_waste'] = $model->getTypeWaste();
+                $result[$type][] = $arr;
             }
         }
         return $result;
