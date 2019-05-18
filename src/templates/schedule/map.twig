@@ -8,7 +8,8 @@
 {% block content %}
     <div class="row" style="height: 100%;">
         <div class="col-sm-12" style="height: 100%;">
-            <div id="map" class="col-sm-8" style="height: 80%;"></div>
+            <div id="map" class="col-sm-8" style="height: 50%;"></div>
+            <div id="legend" class="col-sm-4"> </div>
         <div>
     </div>
 {% endblock %}
@@ -189,7 +190,7 @@
     }
 
     // Добавляем меню в тэг BODY.
-    menu.appendTo($('body'));
+    menu.appendTo($('#legend'));
     // Выставляем масштаб карты чтобы были видны все группы.
     myMap.setBounds(myMap.geoObjects.getBounds());
 }
