@@ -1,0 +1,113 @@
+{% extends '/layout/main.twig' %}
+{% set pageTitle="Расписание" %}
+{% block breadcrumb %}
+    <ol class="breadcrumb">
+        <li class="active">{{ pageTitle }}</li>
+    </ol>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <button class="btn btn-primary" onclick="clearAllFilters()">Очистить все фильтры</button>
+            <table id="lesson-database" class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Дата стандартная</th>
+                    <th>Дата</th>
+                    <th>День недели</th>
+                    <th>Пара</th>
+                </tr>
+                </thead>
+                <thead>
+                <tr>
+                    <th id="dateDefault"></th>
+                    <th id="date"></th>
+                    <th id="week">День недели</th>
+                    <th id="lesson">Пара</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for lesson in schedules %}
+                    <tr>
+                        <td>{{ lesson.date }}</td>
+                        <td>{{ lesson.date|date("d.m.Y") }}</td>
+                        <td>{{ ['','Понедельник','Вторник','Среда','Четверг','Пятница','Суббота','Воскресенье'][lesson['date']|date("N")] }}</td>
+                        <td>{{ lesson['lesson'] }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+{% block script %}
+    <script src="/js/jquery.dataTables.min.js"></script>
+    <script src="/js/dataTables.bootstrap.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var dataTable = $("#lesson-database").DataTable({
+//                serverSide: true,
+                searching: true,
+                processing: true,
+                stateSave: true,
+//                sDom: 'lrtip',
+                columns: [
+                    {data: "dateDefault", name: "dateDefault", sortable: true},
+                    {data: "date", name: "date", sortable: true},
+                    {data: "week", name: "week", sortable: true},
+                    {data: "lesson", name: "lesson", sortable: true}
+                ],
+                language: {
+                    "processing": "Подождите...",
+                    "search": "Поиск:",
+                    "lengthMenu": "Показать _MENU_ записей",
+                    "info": "Записи с _START_ до _END_ из _TOTAL_ записей",
+                    "infoEmpty": "Записи с 0 до 0 из 0 записей",
+                    "infoFiltered": "(отфильтровано из _MAX_ записей)",
+                    "infoPostFix": "",
+                    "loadingRecords": "Загрузка записей...",
+                    "zeroRecords": "Записи отсутствуют.",
+                    "emptyTable": "В таблице отсутствуют данные",
+                    "paginate": {
+                        "first": "Первая",
+                        "previous": "Предыдущая",
+                        "next": "Следующая",
+                        "last": "Последняя"
+                    },
+                    "aria": {
+                        "sortAscending": ": активировать для сортировки столбца по возрастанию",
+                        "sortDescending": ": активировать для сортировки столбца по убыванию"
+                    }
+                },
+                initComplete: function () {
+                    this.api().columns().every(function () {
+                        if (!this.visible()) {
+                            columnId = this.dataSrc();
+                            $('#' + columnId).remove();
+                        }
+                        var column = this;
+                        var columnId = column.dataSrc();
+                        $('<input  style="width: 130px"  type="text" value="' + column.search() + '">')
+                            .appendTo($('#' + columnId).empty())
+                            .on('keyup', function () {
+                                var val = $.fn.dataTable.util.escapeRegex(
+                                    $(this).val()
+                                );
+                                column.search(val, false, false).draw();
+                            });
+                    });
+                }
+            });
+            function clearAllFilters() {
+
+                var oTable = $('#lesson-database').dataTable();
+                var oSettings = oTable.fnSettings();
+                for (iCol = 0; iCol < oSettings.aoPreSearchCols.length; iCol++) {
+                    oSettings.aoPreSearchCols[iCol].sSearch = '';
+                }
+                oTable.fnDraw();
+            }
+        });
+
+    </script>
+{% endblock %}

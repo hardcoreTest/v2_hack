@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    {# <link rel="icon" href="../../favicon.ico"> #}
+    <title>{{ pageTitle|default("Texnic - Центр авторизации") }}</title>
+
+    <!-- Bootstrap -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/style.css?_=2" rel="stylesheet">
+    <link href="/css/dataTables.bootstrap.min.css" rel="stylesheet">
+
+    <script src="/js/jquery-1.12.3.min.js"></script>
+    <script>
+        window.onerror = function (message, source, lineno, colno, error) {
+            var messageData = {
+                userId: "{{ userData|default("NO_USER") }}",
+                session: "{{ dump_session_id() }}",
+                appName: navigator.appName,
+                appVersion: navigator.appVersion,
+                userAgent: navigator.userAgent,
+                url: window.location,
+                message: message,
+                source: source,
+                lineno: lineno,
+                stack: error ? error.stack : "no error stack",
+                error: error
+            };
+        };
+    </script>
+
+</head>
+<body>
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(52748311, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true,
+        webvisor:true
+    });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/52748311" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+<div class="container-fluid">
+    <nav class="navbar navbar-default" style="padding-top: 1%">
+        <ul class="nav navbar-nav">
+            <li role="presentation"><a href="{{ path('schedule_about') }}">О театре (задание 1)</a></li>
+            <li role="presentation"><a href="{{ path('schedule_poster') }}">Афиша (задание 2)</a></li>
+            <li role="presentation"><a href="/z5.fbx">Макет театра (задание 5)</a></li>
+            <li role="presentation"><a href="{{ path('schedule_video') }}">О театре Видео (задание 7)</a></li>
+            <li role="presentation"><a href="{{ path('schedule_brochure') }}">Брошюра (задание 8)</a></li>
+            <li role="presentation"><a href="{{ path('schedule_prezi') }}">Презентация (задание 9)</a></li>
+            <li role="presentation"><a href="{{ path('schedule_work') }}">Таблицы (задание 11)</a></li>
+            <li role="presentation"><a href="{{ path('schedule_price') }}">БД(задание 12)</a></li>
+        </ul>
+    </nav>
+    {% block content %}
+    {% endblock %}
+</div>
+
+<div class="personalDataConfirm bg-info" hidden>
+    На нашем сайте мы используем cookie для сбора информации технического характера.
+    <button class="btn btn-primary js-confirm-personal-data">ОК</button>
+</div>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="/js/bootstrap.min.js"></script>
+<script>
+    $.fn.bootstrapBtn = $.fn.button.noConflict();
+</script>
+<script src="/js/twig.min.js"></script>
+<script src="/js/jquery-ui.js"></script>
+<script>
+
+    $(document).ready(function () {
+
+
+        if (!getCookie('personalDataConfirm')) {
+            $('.personalDataConfirm').show();
+        }
+        $('.js-confirm-personal-data').on('click', function () {
+            var date = new Date(new Date().getTime() + 365 * 24 * 3600 * 1000);
+            document.cookie = "personalDataConfirm=true; path=/; expires=" + date.toUTCString();
+            $('.personalDataConfirm').hide();
+        });
+    });
+
+    function getCookie(name) {
+        var matches = document.cookie.match(new RegExp(
+            "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+        ));
+        return matches ? decodeURIComponent(matches[1]) : undefined;
+    }
+</script>
+{% block script %}
+
+
+{% endblock %}
+</body>
+</html>

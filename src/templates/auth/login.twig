@@ -1,0 +1,47 @@
+{% extends '/layout/main.twig' %}
+{% set pageTitle="Авторизация" %}
+{% block nav %}
+{% endblock %}
+{% block breadcrumb %}
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <form action="{{ path("auth_check") }}" method="post" class="col-sm-3 col-sm-offset-4">
+            {{ error }} <br>
+            Логин <input type="text" name="_username" value="{{ last_username|default(null) }}" class="form-control"><br>
+
+            Пароль <input type="password" name="_password" class="form-control"><br>
+            <label> <input type="checkbox" name="_remember_me"> Запомнить меня </label><br>
+            <a href="{{ path("auth_reset") }}">Восстановить пароль</a>
+            {% if captcha|default(null) %}
+                <div id="captcha"></div>
+                <input type="submit" value="Войти" id="submit" disabled class="form-control">
+            {% else %}
+                <input type="submit" value="Войти" id="submit" class="form-control">
+            {% endif %}
+        </form>
+    </div>
+
+    {% if captcha|default(null) %}
+        <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"
+                async defer>
+        </script>
+    {% endif %}
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript">
+        {% if captcha|default(null) %}
+        var verifyCallback = function (response) {
+            document.getElementById('submit').disabled = false;
+        };
+        var onloadCallback = function () {
+            grecaptcha.render('captcha', {
+                'sitekey': '{{ id }}',
+                'size': 'compact',
+                'callback': verifyCallback
+            });
+        };
+        {% endif %}
+    </script>
+{% endblock %}

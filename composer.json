@@ -1,0 +1,26 @@
+{
+  "name": "loktinov",
+  "description": "CRM",
+  "homepage": "http://localhost:8085/",
+  "type": "project",
+  "require": {
+    "php": ">=7.0.0",
+    "silex/silex": "~2.0",
+    "twig/twig": "2.4.3",
+    "symfony/twig-bridge": "3.3.4",
+    "doctrine/dbal": "~2.2",
+    "symfony/security": "*",
+    "symfony/validator": "*",
+    "symfony/form": "*",
+    "symfony/translation": "*",
+    "symfony/config": "*",
+    "symfony/security-csrf": "*",
+    "monolog/monolog": "~1.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "schedule\\": "src\\backend"
+    }
+  }
+}
+

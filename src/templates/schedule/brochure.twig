@@ -1,0 +1,18 @@
+{% extends '/layout/main.twig' %}
+{% set pageTitle="Брошюра" %}
+{% block breadcrumb %}
+    <ol class="breadcrumb">
+        <li class="active">{{ pageTitle }}</li>
+    </ol>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <embed src="z8.pdf" width="800" height="600" />
+        <div>
+    </div>
+{% endblock %}
+{% block script %}
+    <script src="/js/jquery.dataTables.min.js"></script>
+    <script src="/js/dataTables.bootstrap.min.js"></script>
+{% endblock %}

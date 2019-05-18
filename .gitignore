@@ -1,0 +1,8 @@
+.idea/
+.vagrant/
+vendor/
+configs/config.php
+runtime/
+public/reports
+test-result
+node_modules

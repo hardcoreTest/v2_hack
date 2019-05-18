@@ -1,0 +1,15 @@
+{% extends '/layout/main.twig' %}
+{% set pageTitle="Сброс" %}
+{% block nav %}
+{% endblock %}
+{% block breadcrumb %}
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <form action="{{ path("auth_reset_validate") }}" method="post" class="col-sm-3 col-sm-offset-4">
+            {{ error |default(null) }}<br>
+            Логин <input type="text" name="username" class="form-control"><br>
+            <button>Получить код востановления</button>
+        </form>
+    </div>
+{% endblock %}
