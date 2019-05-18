@@ -9,7 +9,7 @@
 namespace schedule\Model;
 
 
-class Schedule extends AbstractDbModel
+class Users extends AbstractDbModel
 {
     const FIELD_ID = "id";
     const FIELD_NAME = "name";

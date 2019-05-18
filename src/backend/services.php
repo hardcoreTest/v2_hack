@@ -5,8 +5,8 @@
 $app;
 
 
-$app['model.schedule'] = $app->factory(function () use ($app) {
-    return new \schedule\Model\Schedule($app);
+$app['model.user'] = $app->factory(function () use ($app) {
+    return new \schedule\Model\Users($app);
 });
 
 

@@ -9,7 +9,7 @@
 namespace schedule\Controller;
 
 
-use schedule\Model\Schedule;
+use schedule\Model\Users;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -30,6 +30,9 @@ class MapController
     }
 
     public function map(Application $app, Request $request){
+        /** @var Users $model */
+        $model = $app['model.user'];
+        $users = $model->search([],[],0);
         return $app['twig']->render(self::DIRECTORY . '/map.twig');
     }
 
