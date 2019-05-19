@@ -8,7 +8,7 @@
 {% block content %}
     <div class="row" style="height: 100%;">
         <div class="col-sm-12" style="height: 100%;">
-            <div id="map" class="col-sm-8" style="height: 50%;"></div>
+            <div id="map" class="col-sm-8" style="height: 100%;"></div>
             <div id="legend" class="col-sm-4"> </div>
         <div>
     </div>
@@ -41,12 +41,15 @@
             var myMap;
             var coords;
             var coordText;
-            ymaps.ready(init);function init() {
+            ymaps.ready(init);
+            function init() {
 
     // Создание экземпляра карты.
     var myMap = new ymaps.Map('map', {
             center: [50.443705, 30.530946],
-            zoom: 14
+            zoom: 14,
+             controls: ['smallMapDefaultSet']
+
         }, {
             searchControlProvider: 'yandex#search'
         }),
@@ -72,6 +75,72 @@
             myMap.balloon.close();
         }
     });
+            var subscribe = new ymaps.control.Button({
+    data: {
+        content: 'Подписаться'
+    },
+    options: {
+        // Зададим опции кнопки.
+        selectOnClick: false,
+        // У кнопки будет три состояния: иконка, текст и текст + иконка.
+        // Зададим три значения ширины кнопки для всех состояний.
+        maxWidth: [30, 100, 150]
+    }
+});
+            myMap.controls.add(subscribe, {
+                float: 'right'
+            });
+
+            var saveButton = new ymaps.control.Button({
+    data: {
+        content: 'Сохранть'
+    },
+    options: {
+        // Зададим опции кнопки.
+        selectOnClick: false,
+        // У кнопки будет три состояния: иконка, текст и текст + иконка.
+        // Зададим три значения ширины кнопки для всех состояний.
+        maxWidth: [60, 200, 350]
+    }
+});
+            // myMap.controls.add(saveButton, {
+            //     float: 'right'
+            // });
+            var myCircle = null;
+            var isPress = false;
+
+            subscribe.events
+              .add(
+                'press',
+                function () {
+                    if (!isPress){
+                        subscribe.data.set('content','Cохранить');
+                        myCircle = new ymaps.Circle([
+                // Координаты центра круга.
+                myMap.getCenter(),
+                // Радиус круга в метрах.
+                5000
+            ], {}, {
+                // Задаем опции круга.
+                // Цвет заливки.
+                fillColor: "#DB709377",
+                // Цвет обводки.
+                strokeColor: "#990066",
+                // Прозрачность обводки.
+                strokeOpacity: 0.8,
+                // Ширина обводки в пикселях.
+                strokeWidth: 5
+            });
+                        myMap.geoObjects.add(myCircle);
+                        myCircle.editor.startEditing(myCircle);
+                    }else {
+                        subscribe.data.set('content','Подписаться');
+                        myMap.geoObjects.remove(myCircle);
+
+                    }
+                    isPress = !isPress
+                }
+              );
 
     // Скрываем хинт при открытии балуна.
     myMap.events.add('balloonopen', function (e) {
@@ -160,6 +229,7 @@
     menu.appendTo($('#legend'));
     // Выставляем масштаб карты чтобы были видны все группы.
     myMap.setBounds(myMap.geoObjects.getBounds());
+
     $(document).ready(function() {
         $('.save').click(function () {
                 $('.update').hide();
