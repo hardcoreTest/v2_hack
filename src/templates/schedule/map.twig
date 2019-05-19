@@ -14,6 +14,7 @@
     </div>
     </div>
     {% include "/Modal/newUser.twig" %}
+    {% include "/Modal/newSubscriber.twig" %}
 {% endblock %}
 {% block script %}
             <script>
@@ -119,7 +120,7 @@
                 // Координаты центра круга.
                 myMap.getCenter(),
                 // Радиус круга в метрах.
-                5000
+                1000
             ], {}, {
                 // Задаем опции круга.
                 // Цвет заливки.
@@ -136,6 +137,7 @@
                     }else {
                         subscribe.data.set('content','Подписаться');
                         myMap.geoObjects.remove(myCircle);
+                        $('#addSubscriber').modal('show');
 
                     }
                     isPress = !isPress
@@ -231,6 +233,9 @@
     myMap.setBounds(myMap.geoObjects.getBounds());
 
     $(document).ready(function() {
+        $('.fake').click(function () {
+            document.location.reload(true);
+        });
         $('.save').click(function () {
                 $('.update').hide();
                 var _self = this;
@@ -243,6 +248,7 @@
                         $btn.bootstrapBtn('reset');
                         if (response.success) {
                             $('#addUser').modal('hide');
+                            document.location.reload(true);
                         } else {
                             var errorName = '<p class="bg-danger update">';
                             var errorCoordinate = '<p class="bg-danger update">'
